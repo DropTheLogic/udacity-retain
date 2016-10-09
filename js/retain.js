@@ -21,13 +21,31 @@ $(function(){
         addNewNote: function(noteStr) {
             model.add({
                 content: noteStr,
-                date : Date.now()
+                date : this.getTime()
             });
             view.render();
         },
 
         getNotes: function() {
             return model.getAllNotes().reverse();
+        },
+
+        getTime: function() {
+            var date = new Date();
+            var year = date.getUTCFullYear();
+            var month = date.getUTCMonth();
+            var day = date.getUTCDate();
+            month = ("0" + (month + 1)).slice(-2);
+            year = year.toString().substr(2,2);
+            var dateStamp = month + '/' + day + '/' + year;
+
+            var hour = date.getUTCHours() - (date.getTimezoneOffset() / 60);
+            var minute = date.getUTCMinutes();
+            hour = ((hour > 12) ? hour - 12 : hour);
+            minute = ("0" + (minute + 1)).slice(-2);
+            var timeStamp = hour + ':' + minute + ((hour >= 12) ? 'pm' : 'am');
+
+            return dateStamp + ' ' + timeStamp;
         },
 
         init: function() {
